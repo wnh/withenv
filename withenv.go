@@ -19,8 +19,13 @@ func main() {
 
 	lines := 0
 	for scan.Scan() {
-		txt := scan.Text()
+		txt := strings.TrimSpace(scan.Text())
 		pair := strings.SplitN(txt, "=", 2)
+
+		//fail on empty lines
+		if len(txt) == 0 {
+			continue
+		}
 
 		if len(pair) != 2 || pair[0] == "" || pair[1] == "" {
 			log.Fatal(fmt.Sprintf(".env:%d  - Error parsing \"%s\"", lines, txt))

@@ -20,17 +20,19 @@ $ withenv command arg1 .. argN
 ``
 
 ## File format
-The `.env` file  contains `NAME=value` pairs each on its own line.  All leading
-trailing white space is preserved.  The name is specified as the text before
-the *first* equals. Thus `foo=bar=baz` will result in a variable named `foo`
-set to the value `bar=baz`.  Blank lines are not allowed at this time, nor are
-comments.
+ - The `.env` file  contains `NAME=value` pairs each on its own line.
+ - The name is specified as the text before the *first* equals. Thus
+   `foo=bar=baz` will result in a variable named `foo` set to the value
+   `bar=baz`.  
+ - Blank lines are ignored
+ - All leading trailing white space is removed
 
 
 ## TODO
 
-- Make blank lines need to work. Seriously.
 - Comments would be nice.
+- Make shell scripts work without addind `sh` infront of them
+- RTests maybe? I dunno, could be useful.
 - Proper handling of quoted values for compatibility with some other environment tools
 
 ## Version 
