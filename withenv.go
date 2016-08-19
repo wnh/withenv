@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -12,7 +11,8 @@ import (
 func main() {
 	file, err := os.Open(".env")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
 	}
 
 	scan := bufio.NewScanner(file)
@@ -20,22 +20,24 @@ func main() {
 	lines := 0
 	for scan.Scan() {
 		txt := strings.TrimSpace(scan.Text())
-		pair := strings.SplitN(txt, "=", 2)
-
-		//fail on empty lines
-		if len(txt) == 0 {
+		//skip on empty lines
+		if len(txt) == 0 || strings.HasPrefix(txt, "#") {
 			continue
 		}
 
+		pair := strings.SplitN(txt, "=", 2)
+
 		if len(pair) != 2 || pair[0] == "" || pair[1] == "" {
-			log.Fatal(fmt.Sprintf(".env:%d  - Error parsing \"%s\"", lines, txt))
+			fmt.Fprintf(os.Stderr, ".env:%d  - Error parsing \"%s\"", lines, txt)
+			os.Exit(1)
 		}
 		os.Setenv(pair[0], pair[1])
 		lines++
 	}
 
 	if len(os.Args) < 2 {
-		log.Fatal("Error: Expecting command to run")
+		fmt.Fprintln(os.Stderr, "Error: Expecting command to run")
+		os.Exit(0)
 	}
 
 	cmd := exec.Command(os.Args[1], os.Args[2:]...)
@@ -46,6 +48,7 @@ func main() {
 	err = cmd.Run()
 
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }

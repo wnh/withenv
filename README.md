@@ -26,11 +26,11 @@ $ withenv command arg1 .. argN
    `bar=baz`.  
  - Blank lines are ignored
  - All leading trailing white space is removed
+ - Comments are line based. Comment lines use the first non-whitespace character '#'
 
 
 ## TODO
 
-- Comments would be nice.
 - Make shell scripts work without addind `sh` infront of them
 - RTests maybe? I dunno, could be useful.
 - Proper handling of quoted values for compatibility with some other environment tools
@@ -39,6 +39,5 @@ $ withenv command arg1 .. argN
 * Version 0.1
 
 ## Contact
-#### Developer/Company
 * Homepage: https://github.com/wnh
 * e-mail: harding.will@gmail.com
