@@ -9,7 +9,24 @@ import (
 )
 
 func main() {
-	file, err := os.Open(".env")
+
+	filePrefix := ""
+	subArgs := os.Args[:]
+	expectedCount := 2
+
+	if len(os.Args) >= 2 && strings.HasPrefix(os.Args[1], "--") {
+		filePrefix = os.Args[1][2:] + "."
+		subArgs = os.Args[1:]
+		expectedCount += 1
+	}
+
+	if len(os.Args) < expectedCount {
+		fmt.Fprintln(os.Stderr, "Error: Expecting command to run")
+		os.Exit(0)
+	}
+
+	fname := fmt.Sprintf(".%senv", filePrefix)
+	file, err := os.Open(fname)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
@@ -35,12 +52,7 @@ func main() {
 		lines++
 	}
 
-	if len(os.Args) < 2 {
-		fmt.Fprintln(os.Stderr, "Error: Expecting command to run")
-		os.Exit(0)
-	}
-
-	cmd := exec.Command(os.Args[1], os.Args[2:]...)
+	cmd := exec.Command(subArgs[1], subArgs[2:]...)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

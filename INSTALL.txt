@@ -1,0 +1,9 @@
+ Installing
+============
+
+*withenv* is written in go so you're gonna need that for sure. 
+
+To install:
+
+    go install github.com/wnh/withenv
+
